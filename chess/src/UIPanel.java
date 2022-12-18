@@ -4,6 +4,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UIPanel extends JPanel {
+    private int[] color = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] gridx = {0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8};
+    private int[] gridy = {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 7, 6, 6, 6, 6, 6};
     // 保存所有棋子
     private Chess[] array = new Chess[32];
 
@@ -30,11 +33,15 @@ public class UIPanel extends JPanel {
                         // 第n次点击的时候有棋子
                         if (c.getColor() == selectedChess.getColor()){
                             // 重新选择
+                            selectedChess = c;
                             System.out.println("重新选择");
                         }
                         else {
                             // 吃子
                             System.out.println("吃子");
+                            if (selectedChess.MoveOK(gridx, gridy)) {
+
+                            }
                         }
 
                     }
@@ -42,6 +49,10 @@ public class UIPanel extends JPanel {
                         // 第n次点击的地方没有棋子
                         // 移动
                         System.out.println("移动");
+                        if (selectedChess.MoveOK(gridx, gridy)) {
+                            selectedChess.setX(gridx);
+                            selectedChess.setY(gridy);
+                        }
                     }
                 }
                 System.out.println("点击的棋子对象为："+selectedChess);
@@ -51,11 +62,10 @@ public class UIPanel extends JPanel {
         });
     }
 
-    //
     private Chess getChess(int x, int y){
-        for (Chess item : array) {
-            if (item.getX() == x && item.getY() == y){
-                return item;
+        for (int i=0; i<32; i++) {
+            if (array[i].getX() == x && array[i].getY() == y){
+                return array[i];
             }
         }
         return null;
@@ -63,7 +73,7 @@ public class UIPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        // super.paint(g);
+        super.paint(g);
         // 绘制棋盘外圈大长方形
         int left = 40;
         int bottom = 80;
@@ -109,75 +119,20 @@ public class UIPanel extends JPanel {
         g.setFont(f1);
 
 
-        // 绘制黑子
-        // 绘制底线棋子
-        String[] name1 = {"車", "馬", "象", "士", "将", "士", "象", "馬", "車"};
-        int size2 = name1.length;
-        for (int i=0; i<size2; i++) {
-            g.setColor(Color.ORANGE);
-            g.fillOval(left+i*Space-Space/2, bottom-Space/2, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawString(name1[i], left+i*Space-Space/4, bottom+Space/5);
-        }
+        String[] name = {"車", "馬", "象", "士", "将", "士", "象", "馬", "車", "炮", "炮", "卒", "卒", "卒", "卒", "卒",
+                "車", "馬", "相", "仕", "帥", "仕", "相", "馬", "車", "炮", "炮", "兵", "兵", "兵", "兵", "兵"};
 
+        for (int i=0; i<32; i++) {
+            Chess c = array[i];
+            c.draw(g, this);
 
-        // 绘制双炮
-        g.setColor(Color.ORANGE);
-        g.fillOval(left+Space-Space/2, bottom+2*Space-Space/2, diameter, diameter);
-        g.setColor(Color.BLACK);
-        g.drawString("炮", left+Space-Space/4, bottom+2*Space+Space/5);
-
-        g.setColor(Color.ORANGE);
-        g.fillOval(left+7*Space-Space/2, bottom+2*Space-Space/2, diameter, diameter);
-        g.setColor(Color.BLACK);
-        g.drawString("炮", left+7*Space-Space/4, bottom+2*Space+Space/5);
-
-
-        // 绘制卒
-        for (int i=0; i<5; i++) {
-            g.setColor(Color.ORANGE);
-            g.fillOval(left+2*i*Space-Space/2, bottom+3*Space-Space/2, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawString("卒", left+2*i*Space-Space/4, bottom+3*Space+Space/5);
-        }
-
-
-        // 绘制红子
-        // 绘制底线
-        String[] name2 = {"車", "馬", "相", "仕", "帥", "仕", "相", "馬", "車"};
-        size2 = name2.length;
-        for (int i=0; i<size2; i++) {
-            g.setColor(Color.ORANGE);
-            g.fillOval(left+i*Space-Space/2, bottom+9*Space-Space/2, diameter, diameter);
-            g.setColor(Color.RED);
-            g.drawString(name2[i], left+i*Space-Space/4, bottom+9*Space+Space/5);
-        }
-
-
-        // 绘制双炮
-        g.setColor(Color.ORANGE);
-        g.fillOval(left+Space-Space/2, bottom+7*Space-Space/2, diameter, diameter);
-        g.setColor(Color.RED);
-        g.drawString("炮", left+Space-Space/4, bottom+7*Space+Space/5);
-
-        g.setColor(Color.ORANGE);
-        g.fillOval(left+7*Space-Space/2, bottom+7*Space-Space/2, diameter, diameter);
-        g.setColor(Color.RED);
-        g.drawString("炮", left+7*Space-Space/4, bottom+7*Space+Space/5);
-
-
-        // 绘制兵
-        for (int i=0; i<5; i++) {
-            g.setColor(Color.ORANGE);
-            g.fillOval(left+2*i*Space-Space/2, bottom+6*Space-Space/2, diameter, diameter);
-            g.setColor(Color.RED);
-            g.drawString("卒", left+2*i*Space-Space/4, bottom+6*Space+Space/5);
         }
 
         if (selectedChess != null) {
             selectedChess.drawRect(g);
         }
     }
+
 
 
     private void CreateChess() {
