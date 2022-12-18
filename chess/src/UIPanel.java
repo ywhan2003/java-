@@ -4,11 +4,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UIPanel extends JPanel {
-    private int[] color = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private int[] gridx = {0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8};
-    private int[] gridy = {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 7, 6, 6, 6, 6, 6};
     // 保存所有棋子
-    private Chess[] array = new Chess[32];
+    public Chess[] array = new Chess[32];
+    public Chess[][] board = new Chess[10][10];
+    UIPanel panel = this;
 
     // 当前选中的棋子
     private Chess selectedChess;
@@ -39,7 +38,7 @@ public class UIPanel extends JPanel {
                         else {
                             // 吃子
                             System.out.println("吃子");
-                            if (selectedChess.MoveOK(gridx, gridy)) {
+                            if (selectedChess.MoveOK(gridx, gridy, panel)) {
 
                             }
                         }
@@ -49,9 +48,10 @@ public class UIPanel extends JPanel {
                         // 第n次点击的地方没有棋子
                         // 移动
                         System.out.println("移动");
-                        if (selectedChess.MoveOK(gridx, gridy)) {
+                        if (selectedChess.MoveOK(gridx, gridy, panel)) {
                             selectedChess.setX(gridx);
                             selectedChess.setY(gridy);
+                            board[gridx][gridy] = selectedChess;
                         }
                     }
                 }
@@ -119,9 +119,6 @@ public class UIPanel extends JPanel {
         g.setFont(f1);
 
 
-        String[] name = {"車", "馬", "象", "士", "将", "士", "象", "馬", "車", "炮", "炮", "卒", "卒", "卒", "卒", "卒",
-                "車", "馬", "相", "仕", "帥", "仕", "相", "馬", "車", "炮", "炮", "兵", "兵", "兵", "兵", "兵"};
-
         for (int i=0; i<32; i++) {
             Chess c = array[i];
             c.draw(g, this);
@@ -138,7 +135,7 @@ public class UIPanel extends JPanel {
     private void CreateChess() {
         // 保存棋子
         // 保存黑子
-        String[] BName = {"車", "馬", "象", "士", "将", "士", "象", "馬", "車", "炮", "炮", "卒", "卒", "卒", "卒", "卒"};
+        String[] BName = {"車", "馬", "象", "仕", "将", "仕", "象", "馬", "車", "炮", "炮", "卒", "卒", "卒", "卒", "卒"};
         int[] Bx = {0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8};
         int[] By = {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3};
         int size = BName.length;
@@ -151,10 +148,11 @@ public class UIPanel extends JPanel {
             c.CalXY();
             // 将棋子保存在数组里
             array[i] = c;
+            board[Bx[i]][By[i]] = c;
         }
 
         // 保存红子
-        String[] RName = {"車", "馬", "相", "仕", "帥", "仕", "相", "馬", "車", "炮", "炮", "兵", "兵", "兵", "兵", "兵"};
+        String[] RName = {"車", "馬", "相", "士", "帥", "士", "相", "馬", "車", "炮", "炮", "兵", "兵", "兵", "兵", "兵"};
         int[] Rx = {0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 7, 0, 2, 4, 6, 8};
         int[] Ry = {9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 7, 6, 6, 6, 6, 6};
         size = RName.length;
@@ -167,6 +165,7 @@ public class UIPanel extends JPanel {
             c.CalXY();
             // 将棋子保存在数组里
             array[i+size] = c;
+            board[Rx[i]][Ry[i]] = c;
         }
     }
 }
