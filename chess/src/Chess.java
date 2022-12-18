@@ -20,6 +20,8 @@ public class Chess {
     private int gridx;
     private int gridy;
 
+    private int index;
+
     // 绘制棋子边框
     public void drawRect(Graphics g) {
         g.setColor(Color.black);
@@ -47,6 +49,14 @@ public class Chess {
 
     public void setY(int y) {
         this.gridy = y;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 
     public int getX(){
@@ -94,39 +104,58 @@ public class Chess {
             if (x > 5 || x < 3 || y > 2 || y < 0) {
                 return false;
             }
-            if ((Math.abs(gridx - x) == 1 && gridy == y) || (Math.abs(gridy - y) == 1 && gridx == x)) {
-                panel.board[gridx][gridy] = null;
-                return true;
+            if (panel.board[x][y] != null && panel.board[x][y].color == 1) {
+                return false;
             }
+            if (!((Math.abs(gridx - x) == 1 && gridy == y) || (Math.abs(gridy - y) == 1 && gridx == x))) {
+                return false;
+            }
+            panel.board[gridx][gridy] = null;
+            return true;
         } else if ("帥".equals(name)) {
             if (x > 5 || x < 3 || y > 9 || y < 7) {
                 return false;
             }
-            if ((Math.abs(gridx - x) == 1 && gridy == y) || (Math.abs(gridy - y) == 1 && gridx == x)) {
-                panel.board[gridx][gridy] = null;
-                return true;
+            if (panel.board[x][y] != null && panel.board[x][y].color == 0) {
+                return false;
             }
+            if (!((Math.abs(gridx - x) == 1 && gridy == y) || (Math.abs(gridy - y) == 1 && gridx == x))) {
+                return false;
+            }
+            panel.board[gridx][gridy] = null;
+            return true;
         } else if ("仕".equals(name)) {
             if (x > 5 || x < 3 || y > 2 || y < 0) {
                 return false;
             }
-            if (Math.abs(gridx - x) == 1 && Math.abs(gridy - y) == 1) {
-                panel.board[gridx][gridy] = null;
-                return true;
+            if (panel.board[x][y] != null && panel.board[x][y].color == 1) {
+                return false;
             }
+            if (!(Math.abs(gridx - x) == 1 && Math.abs(gridy - y) == 1)) {
+                return false;
+            }
+            panel.board[gridx][gridy] = null;
+            return true;
         } else if ("士".equals(name)) {
             if (x > 5 || x < 3 || y > 9 || y < 7) {
                 return false;
             }
-            if (Math.abs(gridx - x) == 1 && Math.abs(gridy - y) == 1) {
-                panel.board[gridx][gridy] = null;
-                return true;
+            if (panel.board[x][y] != null && panel.board[x][y].color == 0) {
+                return false;
             }
+            if (!(Math.abs(gridx - x) == 1 && Math.abs(gridy - y) == 1)) {
+                return false;
+            }
+            panel.board[gridx][gridy] = null;
+            return true;
         } else if ("象".equals(name)) {
             if (x < 0 || x > 8 || y < 0 || y > 4) {
                 return false;
             }
             if (Math.abs(gridx - x) != 2 || Math.abs(gridy - y) != 2 ) {
+                return false;
+            }
+            if (panel.board[x][y] != null && panel.board[x][y].color == 1) {
                 return false;
             }
             // 判断蹩脚
@@ -139,6 +168,9 @@ public class Chess {
             return true;
         } else if ("相".equals(name)) {
             if (x < 0 || x > 8 || y < 5 || y > 9) {
+                return false;
+            }
+            if (panel.board[x][y] != null && panel.board[x][y].color == 0) {
                 return false;
             }
             if (Math.abs(gridx - x) != 2 || Math.abs(gridy - y) != 2 ) {
@@ -156,6 +188,9 @@ public class Chess {
             if (x < 0 || x > 8 || y < 0 || y > 9) {
                 return false;
             }
+            if (panel.board[x][y] != null && panel.board[x][y].color == panel.board[gridx][gridy].color) {
+                return false;
+            }
             // 判断是否日字格
             if (!(Math.abs(gridx - x) == 2 && Math.abs(gridy - y) == 1 ||
                     Math.abs(gridx - x) == 1 && Math.abs(gridy - y) == 2)) {
@@ -171,7 +206,7 @@ public class Chess {
             if (Math.abs(gridy - y) == 2) {
                 int Center = (gridy + y) / 2;
                 for (int i=0; i<32; i++) {
-                    if (panel.array[i].gridy == Center && panel.array[i].gridx == gridx) {
+                    if (panel.array[i] != null && panel.array[i].gridy == Center && panel.array[i].gridx == gridx) {
                         return false;
                     }
                 }
@@ -268,7 +303,7 @@ public class Chess {
                         }
                     }
                 }
-                if (count > 1) {
+                if (count > 2) {
                     return false;
                 }
             } else {
@@ -283,21 +318,21 @@ public class Chess {
                         }
                     }
                 } else {
+                    System.out.println("我测你们马");
                     for (int i=gridy+1; i<=y; i++) {
                         if (panel.board[gridx][i] != null) {
                             count += 1;
-                            if (panel.board[gridx][i].color == panel.board[gridx][gridy].color) {
-                                return false;
-                            }
                         }
                     }
                 }
-                System.out.println(count);
-                if (count > 1) {
+                if (count > 2) {
                     return false;
                 }
             }
-            if (count == 1) {
+            if (count == 1){
+                return false;
+            }
+            if (count == 2) {
                 if (panel.board[x][y] == null) {
                     return false;
                 } else if (panel.board[x][y].color == color) {
@@ -308,6 +343,9 @@ public class Chess {
             return true;
         } else if ("卒".equals(name)) {
             if (x < 0 || x > 8 || y < 0 || y > 9) {
+                return false;
+            }
+            if (panel.board[x][y] != null && panel.board[x][y].color == panel.board[gridx][gridy].color) {
                 return false;
             }
             if (gridy < 5) {
@@ -328,6 +366,9 @@ public class Chess {
             return true;
         } else if ("兵".equals(name)) {
             if (x < 0 || x > 8 || y < 0 || y > 9) {
+                return false;
+            }
+            if (panel.board[x][y] != null && panel.board[x][y].color == panel.board[gridx][gridy].color) {
                 return false;
             }
             if (gridy >= 5) {

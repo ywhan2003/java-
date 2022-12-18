@@ -39,7 +39,11 @@ public class UIPanel extends JPanel {
                             // 吃子
                             System.out.println("吃子");
                             if (selectedChess.MoveOK(gridx, gridy, panel)) {
-
+                                int index = c.getIndex();
+                                array[index] = null;
+                                selectedChess.setX(gridx);
+                                selectedChess.setY(gridy);
+                                board[gridx][gridy] = selectedChess;
                             }
                         }
 
@@ -64,7 +68,7 @@ public class UIPanel extends JPanel {
 
     private Chess getChess(int x, int y){
         for (int i=0; i<32; i++) {
-            if (array[i].getX() == x && array[i].getY() == y){
+            if (array[i] != null &&  array[i].getX() == x && array[i].getY() == y){
                 return array[i];
             }
         }
@@ -121,8 +125,9 @@ public class UIPanel extends JPanel {
 
         for (int i=0; i<32; i++) {
             Chess c = array[i];
-            c.draw(g, this);
-
+            if (array[i] != null) {
+                c.draw(g, this);
+            }
         }
 
         if (selectedChess != null) {
@@ -145,6 +150,7 @@ public class UIPanel extends JPanel {
             c.setColor(1);
             c.setX(Bx[i]);
             c.setY(By[i]);
+            c.setIndex(i);
             c.CalXY();
             // 将棋子保存在数组里
             array[i] = c;
@@ -162,6 +168,7 @@ public class UIPanel extends JPanel {
             c.setColor(0);
             c.setX(Rx[i]);
             c.setY(Ry[i]);
+            c.setIndex(i+16);
             c.CalXY();
             // 将棋子保存在数组里
             array[i+size] = c;
