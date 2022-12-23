@@ -12,6 +12,15 @@ public class UIPanel extends JPanel {
     // 当前选中的棋子
     private Chess selectedChess;
 
+    // 当前玩家
+    private int current = 0;
+    // 默认红方先走
+
+    private void finish() {
+        current = 1 - current;
+        selectedChess = null;
+    }
+
     public UIPanel() {
         CreateChess();
         // 添加点击事件
@@ -25,6 +34,9 @@ public class UIPanel extends JPanel {
                 if (selectedChess == null){
                     // 第一次选择一个棋子
                     selectedChess = getChess(gridx, gridy);
+                    if (selectedChess != null && selectedChess.getColor() != current) {
+                        selectedChess = null;
+                    }
                 }
                 else {
                     Chess c = getChess(gridx, gridy);
@@ -45,6 +57,7 @@ public class UIPanel extends JPanel {
                                 selectedChess.setY(gridy);
                                 board[gridx][gridy] = selectedChess;
                             }
+                            finish();
                         }
 
                     }
@@ -57,6 +70,7 @@ public class UIPanel extends JPanel {
                             selectedChess.setY(gridy);
                             board[gridx][gridy] = selectedChess;
                         }
+                        finish();
                     }
                 }
                 System.out.println("点击的棋子对象为："+selectedChess);
