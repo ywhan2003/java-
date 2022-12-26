@@ -33,6 +33,9 @@ public class Chess {
         this.name = name;
     }
 
+    public String getName() {
+        return this.name;
+    }
 
     public void setColor(int color) {
         this.color = color;
@@ -318,7 +321,6 @@ public class Chess {
                         }
                     }
                 } else {
-                    System.out.println("我测你们马");
                     for (int i=gridy+1; i<=y; i++) {
                         if (panel.board[gridx][i] != null) {
                             count += 1;
