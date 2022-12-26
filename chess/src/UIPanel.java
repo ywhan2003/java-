@@ -16,6 +16,9 @@ public class UIPanel extends JPanel {
     private int current = 0;
     // 默认红方先走
 
+    // 标记游戏是否结束
+    private int over = 0;
+
     private void finish() {
         current = 1 - current;
         selectedChess = null;
@@ -34,7 +37,7 @@ public class UIPanel extends JPanel {
                 if (selectedChess == null){
                     // 第一次选择一个棋子
                     selectedChess = getChess(gridx, gridy);
-                    if (selectedChess != null && selectedChess.getColor() != current) {
+                    if (selectedChess != null && selectedChess.getColor() != current || over != 0) {
                         selectedChess = null;
                     }
                 }
@@ -52,12 +55,20 @@ public class UIPanel extends JPanel {
                             System.out.println("吃子");
                             if (selectedChess.MoveOK(gridx, gridy, panel)) {
                                 int index = c.getIndex();
+                                if (array[index].getName().equals("将")) {
+                                    over = 1;
+                                    System.out.println("红方胜利！");
+                                }
+                                else if (array[index].getName().equals("帥")) {
+                                    over = 1;
+                                    System.out.println("黑方胜利！");
+                                }
                                 array[index] = null;
                                 selectedChess.setX(gridx);
                                 selectedChess.setY(gridy);
                                 board[gridx][gridy] = selectedChess;
+                                finish();
                             }
-                            finish();
                         }
 
                     }
@@ -69,8 +80,8 @@ public class UIPanel extends JPanel {
                             selectedChess.setX(gridx);
                             selectedChess.setY(gridy);
                             board[gridx][gridy] = selectedChess;
+                            finish();
                         }
-                        finish();
                     }
                 }
                 System.out.println("点击的棋子对象为："+selectedChess);
