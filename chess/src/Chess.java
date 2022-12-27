@@ -253,7 +253,6 @@ public class Chess {
             } else {
                 if (gridy > y) {
                     for (int i=y; i<gridy; i++) {
-                        System.out.println(i);
                         if (panel.board[gridx][i] != null) {
                             count += 1;
                             if (panel.board[gridx][i].color == panel.board[gridx][gridy].color) {
@@ -271,7 +270,6 @@ public class Chess {
                         }
                     }
                 }
-                System.out.println(count);
                 if (count > 1) {
                     return false;
                 }
@@ -312,7 +310,6 @@ public class Chess {
             } else {
                 if (gridy > y) {
                     for (int i=y; i<gridy; i++) {
-                        System.out.println(i);
                         if (panel.board[gridx][i] != null) {
                             count += 1;
                             if (panel.board[gridx][i].color == panel.board[gridx][gridy].color) {
