@@ -105,9 +105,9 @@ public class Chess {
     public boolean MoveOK(int x, int y, UIPanel panel) {
         if ("将".equals(name)) {
             for (int i=gridy+1; i<=y; i++) {
-                if (panel.board[x][i] != null && !panel.board[x][i].name.equals("帥")) {
+                if (panel.board[gridx][i] != null && !panel.board[gridx][i].name.equals("帥")) {
                     return false;
-                } else if (panel.board[x][i] != null && panel.board[x][i].name.equals("帥")) {
+                } else if (panel.board[gridx][i] != null && panel.board[gridx][i].name.equals("帥")) {
                     panel.board[gridx][gridy] = null;
                     return true;
                 }
@@ -125,9 +125,9 @@ public class Chess {
             return true;
         } else if ("帥".equals(name)) {
             for (int i=gridy-1; i>=y; i--) {
-                if (panel.board[x][i] != null && !panel.board[x][i].name.equals("将")) {
+                if (panel.board[gridx][i] != null && !panel.board[gridx][i].name.equals("将")) {
                     return false;
-                } else if (panel.board[x][i] != null && panel.board[x][i].name.equals("将")) {
+                } else if (panel.board[gridx][i] != null && panel.board[gridx][i].name.equals("将")) {
                     panel.board[gridx][gridy] = null;
                     return true;
                 }
