@@ -104,6 +104,14 @@ public class Chess {
 
     public boolean MoveOK(int x, int y, UIPanel panel) {
         if ("将".equals(name)) {
+            for (int i=gridy+1; i<=y; i++) {
+                if (panel.board[x][i] != null && !panel.board[x][i].name.equals("帥")) {
+                    return false;
+                } else if (panel.board[x][i] != null && panel.board[x][i].name.equals("帥")) {
+                    panel.board[gridx][gridy] = null;
+                    return true;
+                }
+            }
             if (x > 5 || x < 3 || y > 2 || y < 0) {
                 return false;
             }
@@ -116,6 +124,14 @@ public class Chess {
             panel.board[gridx][gridy] = null;
             return true;
         } else if ("帥".equals(name)) {
+            for (int i=gridy-1; i>=y; i--) {
+                if (panel.board[x][i] != null && !panel.board[x][i].name.equals("将")) {
+                    return false;
+                } else if (panel.board[x][i] != null && panel.board[x][i].name.equals("将")) {
+                    panel.board[gridx][gridy] = null;
+                    return true;
+                }
+            }
             if (x > 5 || x < 3 || y > 9 || y < 7) {
                 return false;
             }

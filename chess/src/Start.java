@@ -18,7 +18,7 @@ public class Start {
         f.setLayout(null);
 
 
-        ImageIcon imageIcon = new ImageIcon("BG.png");
+        ImageIcon imageIcon = new ImageIcon("chess/BG.png");
         // f.setIconImage(imageIcon.getImage());
         JLabel BackGround = new JLabel(imageIcon);
         // BackGround.setIcon(imageIcon);
