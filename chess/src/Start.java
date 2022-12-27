@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class Start {
@@ -17,7 +18,7 @@ public class Start {
         f.setLayout(null);
 
 
-        ImageIcon imageIcon = new ImageIcon("chess/BG.png");
+        ImageIcon imageIcon = new ImageIcon("BG.png");
         // f.setIconImage(imageIcon.getImage());
         JLabel BackGround = new JLabel(imageIcon);
         // BackGround.setIcon(imageIcon);
@@ -37,6 +38,19 @@ public class Start {
         b1.setFocusable(false);
         b2.setBounds(200,300,100,40);
         b2.setFocusable(false);
+        b1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChineseChess playing = new ChineseChess();
+                playing.main(null);
+            }
+        });
+        b2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
         name.setBounds(150,100,400,40);
 
 
