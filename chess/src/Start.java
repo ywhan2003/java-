@@ -32,11 +32,16 @@ public class Start {
         JLabel name = new JLabel("中国象棋");
         name.setFont(font);
         p.add(name);
+        Font myfont = new Font("隶书", Font.BOLD, 16);
         b1 = new JButton("开始游戏");
         b2 = new JButton("退出游戏");
         b1.setBounds(200,200,100,40);
+        b1.setBackground(Color.orange);
+        b1.setFont(myfont);
         b1.setFocusable(false);
         b2.setBounds(200,300,100,40);
+        b2.setBackground(Color.orange);
+        b2.setFont(myfont);
         b2.setFocusable(false);
         b1.addActionListener(new ActionListener() {
             @Override
