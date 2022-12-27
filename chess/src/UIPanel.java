@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import java.awt.event.*;
 public class UIPanel extends JPanel {
     // 保存所有棋子
     public Chess[] array = new Chess[32];
@@ -30,10 +28,8 @@ public class UIPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("点击棋盘的坐标为：x="+e.getX()+",y="+e.getY());
                 int gridx = Chess.getXFromXY(e.getX());
                 int gridy = Chess.getYFromXY(e.getY());
-                System.out.println("点击棋盘的网格坐标为：x="+gridx+",y="+gridy);
                 if (selectedChess == null){
                     // 第一次选择一个棋子
                     selectedChess = getChess(gridx, gridy);
@@ -48,20 +44,16 @@ public class UIPanel extends JPanel {
                         if (c.getColor() == selectedChess.getColor()){
                             // 重新选择
                             selectedChess = c;
-                            System.out.println("重新选择");
                         }
                         else {
                             // 吃子
-                            System.out.println("吃子");
                             if (selectedChess.MoveOK(gridx, gridy, panel)) {
                                 int index = c.getIndex();
                                 if (array[index].getName().equals("将")) {
                                     over = 1;
-                                    System.out.println("红方胜利！");
                                 }
                                 else if (array[index].getName().equals("帥")) {
-                                    over = 1;
-                                    System.out.println("黑方胜利！");
+                                    over = 2;
                                 }
                                 array[index] = null;
                                 selectedChess.setX(gridx);
@@ -75,7 +67,6 @@ public class UIPanel extends JPanel {
                     else {
                         // 第n次点击的地方没有棋子
                         // 移动
-                        System.out.println("移动");
                         if (selectedChess.MoveOK(gridx, gridy, panel)) {
                             selectedChess.setX(gridx);
                             selectedChess.setY(gridy);
@@ -84,7 +75,6 @@ public class UIPanel extends JPanel {
                         }
                     }
                 }
-                System.out.println("点击的棋子对象为："+selectedChess);
                 // 刷新棋盘
                 repaint();
             }
@@ -157,6 +147,25 @@ public class UIPanel extends JPanel {
 
         if (selectedChess != null) {
             selectedChess.drawRect(g);
+        }
+
+        Font f2 = new Font("华文中宋", Font.BOLD,30);
+        g.setFont(f2);
+        if (current == 0 && over == 0) {
+            g.setColor(Color.red);
+            g.drawString("红方行动",left+2*Space-10+500, bottom+4*Space+40);
+        }
+        if (current == 1 && over == 0) {
+            g.setColor(Color.black);
+            g.drawString("黑方行动",left+2*Space-10+500, bottom+4*Space+40);
+        }
+        if (over == 1) {
+            g.setColor(Color.red);
+            g.drawString("红方胜利！",left+2*Space-10+500, bottom+4*Space+40);
+        }
+        if (over == 2) {
+            g.setColor(Color.black);
+            g.drawString("黑方胜利！",left+2*Space-10+500, bottom+4*Space+40);
         }
     }
 
